@@ -4,6 +4,7 @@ import com.softpedia.DemoShoppingCart.models.Product;
 import com.softpedia.DemoShoppingCart.repos.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ public class ProductServiceImpl implements ProductService{
     private final ProductRepository productRepository;
 
     @Override
+    @Transactional
     public Product createProduct(Product product) {
         return null;
     }
@@ -25,11 +27,13 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
+    @Transactional
     public void updateProductById(Product product, Long prodId) {
 
     }
 
     @Override
+    @Transactional
     public void deleteProductById(Long prodId) {
 
     }
