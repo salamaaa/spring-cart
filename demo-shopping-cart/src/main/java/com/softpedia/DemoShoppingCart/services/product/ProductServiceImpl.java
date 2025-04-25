@@ -1,11 +1,14 @@
 package com.softpedia.DemoShoppingCart.services.product;
 
 import com.softpedia.DemoShoppingCart.models.Product;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
+
 public class ProductServiceImpl implements ProductService{
 
     @Override
