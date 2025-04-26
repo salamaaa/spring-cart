@@ -80,6 +80,6 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public Long countProductsByBrandAndName(String brand, String name) {
-        return 0L;
+        return (long) productRepository.findByBrandAndName(brand, name).size();
     }
 }
