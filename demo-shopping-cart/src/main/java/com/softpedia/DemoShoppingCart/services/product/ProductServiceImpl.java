@@ -19,7 +19,7 @@ public class ProductServiceImpl implements ProductService{
     @Override
     @Transactional
     public Product createProduct(Product product) {
-        return null;
+        return productRepository.save(product);
     }
 
     @Override
@@ -32,18 +32,25 @@ public class ProductServiceImpl implements ProductService{
     @Override
     @Transactional
     public void updateProductById(Product product, Long prodId) {
-
+        Product existingProduct = findProductById(prodId);
+        existingProduct.setName(product.getName());
+        existingProduct.setBrand(product.getBrand());
+        existingProduct.setDescription(product.getDescription());
+        existingProduct.setPrice(product.getPrice());
+        existingProduct.setInventory(product.getInventory());
+        productRepository.save(existingProduct);
     }
 
     @Override
     @Transactional
     public void deleteProductById(Long prodId) {
-
+        productRepository.findById(prodId).ifPresentOrElse(productRepository::delete,
+                ()-> {throw new ProductNotFoundException("Product not found to delete!");});
     }
 
     @Override
     public List<Product> getAllProducts() {
-        return List.of();
+        return productRepository.findAll();
     }
 
     @Override
