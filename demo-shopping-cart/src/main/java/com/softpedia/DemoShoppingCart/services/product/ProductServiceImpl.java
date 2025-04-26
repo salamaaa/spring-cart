@@ -1,5 +1,6 @@
 package com.softpedia.DemoShoppingCart.services.product;
 
+import com.softpedia.DemoShoppingCart.exception.ProductNotFoundException;
 import com.softpedia.DemoShoppingCart.models.Product;
 import com.softpedia.DemoShoppingCart.repos.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,9 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public Product findProductById(Long prodId) {
-        return null;
+        return productRepository.findById(prodId).orElseThrow(
+                () -> new ProductNotFoundException("Product not found!")
+        );
     }
 
     @Override
