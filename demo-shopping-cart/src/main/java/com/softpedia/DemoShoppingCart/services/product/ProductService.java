@@ -13,6 +13,7 @@ public interface ProductService {
     List<Product> getProductsByCategory(String category);
     List<Product> getProductsByCategoryAndBrand(String category,String brand);
     List<Product> getProductsByName(String name);
+    List<Product> findByBrand(String brand);
     List<Product> getProductsByBrandAndName(String brand,String name);
     Long countProductsByBrandAndName(String brand,String name);
 }
