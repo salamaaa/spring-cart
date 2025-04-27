@@ -54,15 +54,22 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    @Transactional
-    public void updateProductById(Product product, Long prodId) {
-        Product existingProduct = findProductById(prodId);
-        existingProduct.setName(product.getName());
-        existingProduct.setBrand(product.getBrand());
-        existingProduct.setDescription(product.getDescription());
-        existingProduct.setPrice(product.getPrice());
-        existingProduct.setInventory(product.getInventory());
-        productRepository.save(existingProduct);
+    public void updateProduct(Product product, Long prodId) {
+
+    }
+
+    @Override
+    public Product updateExistingProduct(Product existingProduct, ProductDto productDto) {
+        existingProduct.setName(productDto.getName());
+        existingProduct.setBrand(productDto.getBrand());
+        existingProduct.setDescription(productDto.getDescription());
+        existingProduct.setPrice(productDto.getPrice());
+        existingProduct.setInventory(productDto.getInventory());
+
+        Category category = categoryRepository.findByName(productDto.getCategory().getName());
+        existingProduct.setCategory(category);
+
+        return existingProduct;
     }
 
     @Override
