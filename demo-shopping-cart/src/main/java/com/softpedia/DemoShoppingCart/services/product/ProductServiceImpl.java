@@ -54,8 +54,11 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public void updateProduct(Product product, Long prodId) {
-
+    public Product updateProduct(ProductDto productDto, Long prodId) {
+        return productRepository.findById(prodId)
+                .map(existingProduct -> updateExistingProduct(existingProduct,productDto))
+                .map(productRepository::save)
+                .orElseThrow(()-> new ProductNotFoundException("Product not Found!"));
     }
 
     @Override
