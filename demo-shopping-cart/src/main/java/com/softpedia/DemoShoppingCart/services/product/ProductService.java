@@ -1,11 +1,13 @@
 package com.softpedia.DemoShoppingCart.services.product;
 
+import com.softpedia.DemoShoppingCart.dto.ProductDto;
+import com.softpedia.DemoShoppingCart.models.Category;
 import com.softpedia.DemoShoppingCart.models.Product;
 
 import java.util.List;
 
 public interface ProductService {
-    Product createProduct(Product product);
+    Product createProduct(ProductDto productDto, Category category);
     Product findProductById(Long prodId);
     void updateProductById(Product product,Long prodId);
     void deleteProductById(Long prodId);

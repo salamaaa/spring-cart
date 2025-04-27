@@ -1,6 +1,8 @@
 package com.softpedia.DemoShoppingCart.services.product;
 
+import com.softpedia.DemoShoppingCart.dto.ProductDto;
 import com.softpedia.DemoShoppingCart.exception.ProductNotFoundException;
+import com.softpedia.DemoShoppingCart.models.Category;
 import com.softpedia.DemoShoppingCart.models.Product;
 import com.softpedia.DemoShoppingCart.repos.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +20,15 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     @Transactional
-    public Product createProduct(Product product) {
-        return productRepository.save(product);
+    public Product createProduct(ProductDto productDto, Category category) {
+        return new Product(
+                productDto.getName(),
+                productDto.getBrand(),
+                productDto.getPrice(),
+                productDto.getInventory(),
+                productDto.getDescription(),
+                category
+        );
     }
 
     @Override
