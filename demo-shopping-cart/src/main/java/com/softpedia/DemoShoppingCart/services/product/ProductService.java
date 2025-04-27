@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface ProductService {
     Product createProduct(ProductDto productDto, Category category);
+    Product addProduct(ProductDto productDto);
     Product findProductById(Long prodId);
     void updateProductById(Product product,Long prodId);
     void deleteProductById(Long prodId);

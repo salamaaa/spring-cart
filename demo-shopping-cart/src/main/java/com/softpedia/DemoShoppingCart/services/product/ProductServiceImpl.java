@@ -4,12 +4,14 @@ import com.softpedia.DemoShoppingCart.dto.ProductDto;
 import com.softpedia.DemoShoppingCart.exception.ProductNotFoundException;
 import com.softpedia.DemoShoppingCart.models.Category;
 import com.softpedia.DemoShoppingCart.models.Product;
+import com.softpedia.DemoShoppingCart.repos.CategoryRepository;
 import com.softpedia.DemoShoppingCart.repos.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +19,7 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService{
 
     private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
 
     @Override
     @Transactional
@@ -30,6 +33,18 @@ public class ProductServiceImpl implements ProductService{
                 category
         );
     }
+    @Override
+    @Transactional
+    public Product addProduct(ProductDto productDto) {
+        Category category = Optional.ofNullable(categoryRepository.findByName(productDto.getCategory().getName()))
+                .orElseGet( () -> {
+                            Category newCategory = new Category(productDto.getCategory().getName());
+                            return categoryRepository.save(newCategory);
+                        });
+        productDto.setCategory(category);
+        return productRepository.save(createProduct(productDto,category));
+    }
+
 
     @Override
     public Product findProductById(Long prodId) {
