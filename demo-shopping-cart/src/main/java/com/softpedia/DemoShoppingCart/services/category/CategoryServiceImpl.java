@@ -1,5 +1,6 @@
 package com.softpedia.DemoShoppingCart.services.category;
 
+import com.softpedia.DemoShoppingCart.exception.CategoryAlreadyExistsException;
 import com.softpedia.DemoShoppingCart.exception.CategoryNotFoundException;
 import com.softpedia.DemoShoppingCart.models.Category;
 import com.softpedia.DemoShoppingCart.repos.CategoryRepository;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -35,22 +37,35 @@ public class CategoryServiceImpl implements CategoryService{
     @Override
     @Transactional
     public Category addCategory(Category category) {
-        return categoryRepository.save(category);
+        return Optional.of(category).filter(c ->
+            !categoryRepository.existsByName(c.getName()))
+                .map(categoryRepository::save)
+                .orElseThrow(
+                        ()-> new CategoryAlreadyExistsException(category.getName()+" already exists")
+                );
     }
 
     @Override
     @Transactional
     public Category updateCategory(Category category, Long id) {
-        Category existingCategory = categoryRepository.findById(id).orElseThrow(
-                () -> new CategoryNotFoundException("Category not found!")
-        );
-        existingCategory.setName(category.getName());
-        return categoryRepository.save(existingCategory);
+       return Optional.ofNullable(findById(id)).map(
+               existingCategory-> {
+                   existingCategory.setName(category.getName());
+                   return categoryRepository.save(existingCategory);
+               }
+       ).orElseThrow(
+               ()-> new CategoryNotFoundException("Category not found")
+       );
     }
 
     @Override
     @Transactional
     public void deleteById(Long id) {
-        categoryRepository.deleteById(id);
+        categoryRepository.findById(id).ifPresentOrElse(
+                categoryRepository::delete,
+                ()->{
+                    throw new CategoryNotFoundException("Category not found!");
+                }
+        );
     }
 }
