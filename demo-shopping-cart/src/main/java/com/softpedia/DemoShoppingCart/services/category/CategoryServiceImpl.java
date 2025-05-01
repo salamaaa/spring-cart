@@ -5,6 +5,7 @@ import com.softpedia.DemoShoppingCart.models.Category;
 import com.softpedia.DemoShoppingCart.repos.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,26 +24,33 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public Category findByName(String name) {
-        return null;
+        return categoryRepository.findByName(name);
     }
 
     @Override
     public List<Category> getAllCategories() {
-        return List.of();
+        return categoryRepository.findAll();
     }
 
     @Override
+    @Transactional
     public Category addCategory(Category category) {
-        return null;
+        return categoryRepository.save(category);
     }
 
     @Override
+    @Transactional
     public Category updateCategory(Category category, Long id) {
-        return null;
+        Category existingCategory = categoryRepository.findById(id).orElseThrow(
+                () -> new CategoryNotFoundException("Category not found!")
+        );
+        existingCategory.setName(category.getName());
+        return categoryRepository.save(existingCategory);
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
-
+        categoryRepository.deleteById(id);
     }
 }
