@@ -34,7 +34,7 @@ public class ImageServiceImpl implements ImageService{
 
     @Override
     @Transactional
-    public List<ImageDto> saveImage(List<MultipartFile> files, Long productId) {
+    public List<ImageDto> saveImages(List<MultipartFile> files, Long productId) {
         Product product = productRepository.findById(productId).orElseThrow(
                 ()-> new ProductNotFoundException("Product not found!")
         );
