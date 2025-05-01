@@ -21,8 +21,9 @@ public class ProductServiceImpl implements ProductService{
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
 
+
+    //helper method to be used in the addProduct() method
     @Override
-    @Transactional
     public Product createProduct(ProductDto productDto, Category category) {
         return new Product(
                 productDto.getName(),
@@ -34,7 +35,6 @@ public class ProductServiceImpl implements ProductService{
         );
     }
     @Override
-    @Transactional
     public Product addProduct(ProductDto productDto) {
         Category category = Optional.ofNullable(categoryRepository.findByName(productDto.getCategory().getName()))
                 .orElseGet( () -> {
@@ -61,6 +61,7 @@ public class ProductServiceImpl implements ProductService{
                 .orElseThrow(()-> new ProductNotFoundException("Product not Found!"));
     }
 
+    //helper update method to be used in the updateProduct() method
     @Override
     public Product updateExistingProduct(Product existingProduct, ProductDto productDto) {
         existingProduct.setName(productDto.getName());
